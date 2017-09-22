@@ -22,20 +22,48 @@ Connect your React Native App with WatchKit.
 yarn add react-native-watch
 ```
 
-### Automatic installation
+Link the library to your project automatically by using:
 
 ```
 react-native link react-native-watch
 ```
 
-### Manual installation
+Or manually, by adding `node_modules/react-native-watch/RNWatch.xcodeproj` to your project and adding `libRNWatch.a` to `Build Phases` ➜ `Link Binary With Libraries`
 
-#### iOS
+Once linked to your project, modify AppDelegate.h:
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-watch` and add `RNWatch.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNWatch.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)
+```objectivec
+#import <UIKit/UIKit.h>
+
+@import WatchConnectivity;
+@class WatchBridge;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (nonatomic, strong) UIWindow *window;
+@property(nonatomic, strong) WatchBridge *watchBridge;
+@property(nonatomic, strong) WCSession *session;
+
+@end
+```
+
+And modify `AppDelegate.m`
+
+```objectivec
+#import "AppDelegate.h"
+...
+#import "WatchBridge.h"
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  ...
+  self.watchBridge = [WatchBridge shared];
+  self.session = self.watchBridge.session;
+
+  NSLog(@"watch bridge initialized");
+
+  return YES;
+```
 
 ## Usage
 
