@@ -1,0 +1,80 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OSX
+.DS_Store
+
+
+# Xcode
+
+## Build generated
+build/
+DerivedData
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+
+## Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+project.xcworkspace
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+
+# Carthage
+Carthage/Build
+Carthage/Checkouts
+
+# CocoaPods
+**/Pods
+
+
+# Android/IntelliJ
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+
+# Fastlane
+appium/fastlane/test_output/
+appium/fastlane/report.xml
+appium/.env
+appium/fastlane/README.md
+
+# Appium
+
+aws
+test_bundle.zip
+__pycache__
+.cache
+wheelhouse

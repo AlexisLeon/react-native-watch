@@ -1,0 +1,29 @@
+{
+  "name": "react-native-watch",
+  "version": "0.0.1",
+  "description": "Connect your React Native App with WatchKit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel RNWatch.ios.js > RNWatch.ios.build.js"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "react-component",
+    "ios"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexisleon/react-native-watch.git"
+  },
+  "author": "Alexis Leon <alexis.leon@icloud.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexisleon/react-native-watch/issues"
+  },
+  "homepage": "https://github.com/alexisleon/react-native-watch#readme",
+  "peerDependencies": {
+    "react-native": "^0.41.2"
+  }
+}
