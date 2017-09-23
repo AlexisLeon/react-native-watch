@@ -1,6 +1,6 @@
 {
   "name": "react-native-watch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Connect your React Native App with WatchKit",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,5 @@
   "bugs": {
     "url": "https://github.com/alexisleon/react-native-watch/issues"
   },
-  "homepage": "https://github.com/alexisleon/react-native-watch#readme",
-  "peerDependencies": {
-    "react-native": "^0.41.2"
-  }
+  "homepage": "https://github.com/alexisleon/react-native-watch#readme"
 }

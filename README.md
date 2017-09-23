@@ -30,19 +30,20 @@ react-native link react-native-watch
 
 Or manually, by adding `node_modules/react-native-watch/RNWatch.xcodeproj` to your project and adding `libRNWatch.a` to `Build Phases` ➜ `Link Binary With Libraries`
 
-Once linked to your project, modify AppDelegate.h:
+Once linked to your project, modify `AppDelegate.h`:
 
 ```objectivec
 #import <UIKit/UIKit.h>
+#import <WatchConnectivity/WatchConnectivity.h>
 
-@import WatchConnectivity;
-@class WatchBridge;
+@class RNWatch;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property(nonatomic, strong) WatchBridge *watchBridge;
-@property(nonatomic, strong) WCSession *session;
+
+@property (nonatomic, strong) RNWatch *watchBridge;
+@property (nonatomic, strong) WCSession *session;
 
 @end
 ```
@@ -51,16 +52,15 @@ And modify `AppDelegate.m`
 
 ```objectivec
 #import "AppDelegate.h"
+#import "RNWatch.h"
+
 ...
-#import "WatchBridge.h"
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   ...
-  self.watchBridge = [WatchBridge shared];
+  self.watchBridge = [RNWatch shared];
   self.session = self.watchBridge.session;
-
-  NSLog(@"watch bridge initialized");
 
   return YES;
 ```
@@ -89,10 +89,9 @@ Subscribe and unsubscribe to all messages.
 // Subscribe
 componentDidMount() {
   this.messageSubscription = watch.subscribeToMessages(
-    (err, message, replyHandler) => {
+    (err, message) => {
       if (err) console.error('Error receiving message', err)
       else {
-        if (replyHandler) replyHandler(...)
         ...
       }
     }
