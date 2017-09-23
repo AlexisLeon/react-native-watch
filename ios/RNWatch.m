@@ -1,9 +1,5 @@
 #import "RNWatch.h"
-#if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
-#else
-#import "RCTConvert.h"
-#endif
 
 static const NSString* EVENT_RECEIVE_MESSAGE = @"WatchReceiveMessage";
 
@@ -18,18 +14,27 @@ RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[ EVENT_RECEIVE_MESSAGE ];
+    return @[ EVENT_RECEIVE_MESSAGE ];
+}
+
++ (RNWatch*) shared {
+    static RNWatch *sharedMyManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyManager = [[self alloc] init];
+    });
+    return sharedMyManager;
 }
 
 - (instancetype)init {
-  self = [super init];
-  if ([WCSession isSupported]) {
-    WCSession* session = [WCSession defaultSession];
-    session.delegate = self;
-    self.session = session;
-    [session activateSession];
-  }
-  return self;
+    self = [super init];
+    if ([WCSession isSupported]) {
+        WCSession* session = [WCSession defaultSession];
+        session.delegate = self;
+        self.session = session;
+        [session activateSession];
+    }
+    return self;
 }
 
 /*
@@ -37,30 +42,30 @@ RCT_EXPORT_MODULE()
  */
 RCT_EXPORT_METHOD(sendMessage:(NSDictionary *) message replyCallback:(RCTResponseSenderBlock) replyCallback error:(RCTResponseErrorBlock) errorCallback)
 {
-  [self.session sendMessage:message replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
-    replyCallback(@[replyMessage]);
-  } errorHandler:^(NSError * _Nonnull error) {
-    errorCallback(error);
-  }];
+    [self.session sendMessage:message replyHandler:^(NSDictionary<NSString *,id> * _Nonnull replyMessage) {
+        replyCallback(@[replyMessage]);
+    } errorHandler:^(NSError * _Nonnull error) {
+        errorCallback(error);
+    }];
 }
 
 // didReceiveMessage
 - (void)session:(WCSession *) session didReceiveMessage:(NSDictionary<NSString *,id> *) message {
-  NSLog(@"sessionDidReceiveMessage %@", message);
-  [self dispatchEventWithName:EVENT_RECEIVE_MESSAGE body:message];
+    NSLog(@"sessionDidReceiveMessage %@", message);
+    [self dispatchEventWithName:EVENT_RECEIVE_MESSAGE body:message];
 }
 
 // didReceiveMessage
 - (void)session:(WCSession *) session didReceiveMessage:(NSDictionary<NSString *,id> *) message
    replyHandler:(void (^)(NSDictionary<NSString *,id> * _Nonnull))replyHandler
 {
-
-  NSLog(@"sessionDidReceiveMessageReplyHandler %@", message);
-  // NSString* messageId = [self uuidString];
-  NSMutableDictionary* mutableMessage = [message mutableCopy];
-  // mutableMessage[@"id"] = messageId;
-  // self.replyHandlers[messageId] = replyHandler;
-  [self dispatchEventWithName:EVENT_RECEIVE_MESSAGE body:mutableMessage];
+    NSLog(@"sessionDidReceiveMessageReplyHandler %@", message);
+    // Add ID to message (MessageId)
+    NSString* messageId = [self uuidString];
+    NSMutableDictionary* mutableMessage = [message mutableCopy];
+    mutableMessage[@"id"] = messageId;
+    self.replyHandlers[messageId] = replyHandler;
+    [self dispatchEventWithName:EVENT_RECEIVE_MESSAGE body:mutableMessage];
 }
 
 
@@ -68,19 +73,19 @@ RCT_EXPORT_METHOD(sendMessage:(NSDictionary *) message replyCallback:(RCTRespons
  * Helpers
  */
 
- // dispatchEventWithName
+// dispatchEventWithName
 -(void)dispatchEventWithName:(const NSString*) name body:(NSDictionary<NSString *,id> *)body {
-  NSLog(@"dispatch %@: %@", name, body);
-  [self sendEventWithName:(NSString*)name body:body];
+    NSLog(@"dispatch %@: %@", name, body);
+    [self sendEventWithName:(NSString*)name body:body];
 }
 
 // uuidString
 // https://stackoverflow.com/questions/14352418/how-to-generate-uuid-in-ios
 - (NSString *)uuidString {
-  CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
-  NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
-  CFRelease(uuid);
-  return uuidString;
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+    CFRelease(uuid);
+    return uuidString;
 }
 
 @end
