@@ -32,35 +32,34 @@ Or manually, by adding `node_modules/react-native-watch/RNWatch.xcodeproj` to yo
 
 Once linked to your project, modify `AppDelegate.h`:
 
-```objectivec
+```diff
 #import <UIKit/UIKit.h>
-#import <WatchConnectivity/WatchConnectivity.h>
++ #import <WatchConnectivity/WatchConnectivity.h>
 
-@class RNWatch;
++ @class RNWatch;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-
-@property (nonatomic, strong) RNWatch *watchBridge;
-@property (nonatomic, strong) WCSession *session;
++ @property (nonatomic, strong) RNWatch *watchBridge;
++ @property (nonatomic, strong) WCSession *session;
 
 @end
 ```
 
 And modify `AppDelegate.m`
 
-```objectivec
+```diff
 #import "AppDelegate.h"
-#import "RNWatch.h"
++ #import "RNWatch.h"
 
 ...
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+ -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   ...
-  self.watchBridge = [RNWatch shared];
-  self.session = self.watchBridge.session;
++  self.watchBridge = [RNWatch shared];
++  self.session = self.watchBridge.session;
 
   return YES;
 ```
